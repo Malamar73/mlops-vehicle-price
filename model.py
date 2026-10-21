@@ -21,5 +21,6 @@ def predict_price(year, mileage, condition):
     return max(price, 0)
 
 
-prediction = predict_price(2022, 50000, "good")
-print("Predicted vehicle price:", prediction)
+if __name__ == "__main__":
+    prediction = predict_price(2022, 50000, "good")
+    print("Predicted vehicle price:", prediction)
