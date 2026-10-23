@@ -31,3 +31,7 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t vehicle-price-api:1.0 .
+        with:
+          registry: ghcr.io
+          username: $&#123;&#123; github.actor &#125;&#125;
+          password: $&#123;&#123; secrets.GITHUB_TOKEN &#125;&#125
