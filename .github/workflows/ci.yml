@@ -1,11 +1,13 @@
 
 name: Vehicle Price CI
-permissions:
-  contents: read
-  packages: write
+
 on:
   push:
   pull_request:
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   test:
@@ -31,7 +33,17 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t vehicle-price-api:1.0 .
+
+      - name: Log in to GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: $&#123;&#123; github.actor &#125;&#125;
-          password: $&#123;&#123; secrets.GITHUB_TOKEN &#125;&#125
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Docker image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker tag vehicle-price-api:1.0 ghcr.io/malamar73/mlops-vehicle-price:latest
+          docker push ghcr.io/malamar73/mlops-vehicle-price:latest
